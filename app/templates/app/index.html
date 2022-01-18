@@ -1,0 +1,78 @@
+{% extends 'app/base.html' %}
+
+{% block titulo %}Listado de deseos {% endblock %}
+
+{% block contenido %}
+
+{% include 'app/menu.html' %}
+
+<div class="container">
+    <div class="row mt-5"> 
+        <div class="col-md-12">
+            <h2>Hola, {{request.session.usuario.username}}</h2>
+            <hr>
+            <h3>Mi lista de deseos</h3>
+            
+
+            <table class="table table-bordered">
+                <tr>
+                    {% comment %} <th>ID de usuario</th> {% endcomment %}
+                    <th>Ítem</th>
+                    <th>Usuario</th>
+                    <th>Fecha agregado</th>
+                    <th>Acción</th>
+                    {% comment %} <th>id del item</th> {% endcomment %}
+                </tr>
+                {% for deseo in deseos_preferidos %} 
+                        <tr>
+                            {% comment %} <td>{{deseo.usuario.id}}</td> {% endcomment %}
+                            <td>{{deseo.item}}</td>
+                            <td>{{deseo.usuario.name}}</td>
+                            <td>{{deseo.created_at | date:"d-m-Y H:i:s"}}</td>
+                            <td>
+                                
+                                <a class="btn btn-danger" href="item/preferencia/delete/{{deseo.id}}">Quitar de mis favoritas</a>
+                            
+                            </td>
+                            {% comment %} <td>{{deseo.id}}</td> {% endcomment %}
+                        </tr>
+    
+                    {% endfor %}
+                </table>
+
+            <hr>
+            <h3>Todas las listas de deseos</h3>
+
+            <table class="table table-bordered">
+            <tr>
+                {% comment %} <th>ID de usuario</th> {% endcomment %}
+                <th>Ítem</th>
+                <th>Usuario</th>
+                <th>Fecha agregado</th>
+                <th>Acción</th>
+                {% comment %} <th>id del item</th> {% endcomment %}
+            </tr>
+                {% for deseo in items %}
+                    <tr>
+                        {% comment %} <td>{{deseo.usuario.id}}</td> {% endcomment %}
+                        <td>{{deseo.item}}</td>
+                        <td>{{deseo.usuario.name}}</td>
+                        <td>{{deseo.created_at | date:"d-m-Y H:i:s"}}</td>
+                        <td>
+                            {% if deseo.usuario.id == request.session.usuario.id %}
+                                <a class="btn btn-danger" href="wish_items/delete/{{deseo.id}}">Eliminar</a>
+                            {% endif %}
+                            <a class="btn btn-primary" href="item/preferencia/add/{{deseo.id}}">Agregar a mi lista de deseos</a>
+                        </td>
+                        {% comment %} <td>{{deseo.id}}</td> {% endcomment %}
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
